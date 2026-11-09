@@ -21,7 +21,7 @@ public class CountriesService {
     public Mono<String> fetchCountryByName(String name){
         return webClient
                 .get()
-                .uri("name?q=" + name)
+                .uri("name?q=" + name + "&response_fields=names.common,codes.alpha_2,flag.emoji")
                 .header("Authorization", apikey)
                 .retrieve()
                 .bodyToMono(String.class);
