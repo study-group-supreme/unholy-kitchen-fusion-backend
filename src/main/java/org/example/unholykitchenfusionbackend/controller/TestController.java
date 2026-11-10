@@ -29,7 +29,7 @@ public class TestController {
     @GetMapping("/test/mashup")
     public String mashup(@RequestParam String a, @RequestParam String b) {
         return llmService.ask(
-                "You write a short, fun mashup of two countries. Max 80 words.",   // system: how to behave
+                "You write a short, fun mashup of two countries. Max 80 words.",   // systemMessage: how to behave, might be moved to Service layer
                 "Country 1: " + a + "\nCountry 2: " + b);                          // user: the actual request
     }
 }

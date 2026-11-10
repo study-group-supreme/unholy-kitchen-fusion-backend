@@ -32,22 +32,24 @@ public class LlmService {
                 .defaultHeader("x-api-key", apiKey)           // sent on every request
                 .defaultHeader("anthropic-version", version)
                 .build();
-        this.model = model; this.maxTokens = maxTokens; this.effort = effort;
+        this.model = model;
+        this.maxTokens = maxTokens;
+        this.effort = effort;
     }
 
-    public String ask(String system, String userPrompt) {
-        var body = new ClaudeRequest(model, maxTokens, system,
+    public String ask(String systemMessage, String userPrompt) {
+        var body = new ClaudeRequest(model, maxTokens, systemMessage,
                 List.of(new ClaudeRequest.Message("user", userPrompt)),
                 new ClaudeRequest.OutputConfig(effort));
         try {
-            ClaudeResponse r = client.post().uri("/v1/messages")
+            ClaudeResponse response = client.post().uri("/v1/messages")
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(body)                           // record -> JSON by Jackson
                     .retrieve().bodyToMono(ClaudeResponse.class).block();
             // the first block is not always text, so pick the first "text" block
-            return r.content().stream().filter(b -> "text".equals(b.type()))
+            return response.content().stream().filter(b -> "text".equals(b.type()))
                     .map(ClaudeResponse.ContentBlock::text).findFirst()
-                    .orElseThrow(() -> new IllegalStateException("No text, stop_reason=" + r.stopReason()));
+                    .orElseThrow(() -> new IllegalStateException("No text, stop_reason=" + response.stopReason()));
         } catch (WebClientResponseException e) {
             log.error("LLM error {}: {}", e.getStatusCode(), e.getResponseBodyAsString());
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "The AI service failed, try again");
