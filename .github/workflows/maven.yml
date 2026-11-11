@@ -30,3 +30,4 @@ jobs:
         DATABASE_USERNAME: sa
         DATABASE_PASSWORD: ""
         COUNTRY_TOKEN: ${{ secrets.COUNTRY_TOKEN }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
