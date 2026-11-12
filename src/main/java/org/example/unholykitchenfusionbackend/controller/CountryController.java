@@ -1,5 +1,6 @@
 package org.example.unholykitchenfusionbackend.controller;
 
+import org.example.unholykitchenfusionbackend.dto.CountryResponseDTO;
 import org.example.unholykitchenfusionbackend.model.Country;
 import org.example.unholykitchenfusionbackend.service.CountriesService;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,8 @@ public class CountryController {
         return countriesService.searchForCountries(name);
     }
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Country>> findAllCountries(){
-        List<Country> allCountries = countriesService.fetchAllCountries();
-        return new ResponseEntity<>(allCountries, HttpStatus.OK);
+    public ResponseEntity<List<CountryResponseDTO.CountryDTO>> findAllCountries() {
+        return ResponseEntity.ok(countriesService.fetchAllCountries());
     }
-}
+    }
+

@@ -1,5 +1,6 @@
 package org.example.unholykitchenfusionbackend.service;
 
+import org.example.unholykitchenfusionbackend.dto.CountryResponseDTO;
 import org.example.unholykitchenfusionbackend.model.Country;
 import org.example.unholykitchenfusionbackend.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +49,18 @@ public class CountriesService {
                 .bodyToMono(String.class);
     }
 
-    public List<Country> fetchAllCountries() {
-        return countryRepository.findAll();
+    public List<CountryResponseDTO.CountryDTO> fetchAllCountries() {
+        return countryRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    private CountryResponseDTO.CountryDTO toDTO(Country country) {
+        return new CountryResponseDTO.CountryDTO(
+                new CountryResponseDTO.Names(country.getName()),
+                new CountryResponseDTO.Flag(country.getFlagURL()),
+                country.getSubRegion()
+        );
     }
 }
