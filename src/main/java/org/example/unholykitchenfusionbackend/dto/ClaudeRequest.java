@@ -19,4 +19,6 @@ public record ClaudeRequest(String model,
 
     public record OutputConfig(String effort) {
     }
+
+    public record RecipeResponse(String recipe) {}
 }
