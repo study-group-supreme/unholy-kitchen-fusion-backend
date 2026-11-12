@@ -1,6 +1,7 @@
 package org.example.unholykitchenfusionbackend.controller;
 
 import org.aspectj.weaver.ast.Test;
+import org.example.unholykitchenfusionbackend.dto.ClaudeRequest;
 import org.example.unholykitchenfusionbackend.model.Country;
 import org.example.unholykitchenfusionbackend.service.CountriesService;
 import org.example.unholykitchenfusionbackend.service.LlmService;
@@ -9,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 public class TestController {
     private final CountriesService countriesService;
@@ -40,7 +42,8 @@ public class TestController {
 //    public String sendList(@RequestBody List<Country> countries) {
 
     @PostMapping("/test/create-recipe")
-    public String createRecipe(@RequestBody List<Country> countries) {
-        return llmService.ask(recipeSystemMessage, llmService.constructPrompt(countries));
+    public ClaudeRequest.RecipeResponse createRecipe(@RequestBody List<Country> countries) {
+        String recipeResult = llmService.ask(recipeSystemMessage, llmService.constructPrompt(countries));
+        return new ClaudeRequest.RecipeResponse(recipeResult);
     }
 }
