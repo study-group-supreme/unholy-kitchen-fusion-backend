@@ -2,6 +2,7 @@ package org.example.unholykitchenfusionbackend.controller;
 
 import org.aspectj.weaver.ast.Test;
 import org.example.unholykitchenfusionbackend.dto.ClaudeRequest;
+import org.example.unholykitchenfusionbackend.dto.RecipeResponse;
 import org.example.unholykitchenfusionbackend.model.Country;
 import org.example.unholykitchenfusionbackend.service.CountriesService;
 import org.example.unholykitchenfusionbackend.service.LlmService;
@@ -42,8 +43,8 @@ public class TestController {
 //    public String sendList(@RequestBody List<Country> countries) {
 
     @PostMapping("/test/create-recipe")
-    public ClaudeRequest.RecipeResponse createRecipe(@RequestBody List<Country> countries) {
+    public RecipeResponse createRecipe(@RequestBody List<Country> countries) {
         String recipeResult = llmService.ask(recipeSystemMessage, llmService.constructPrompt(countries));
-        return new ClaudeRequest.RecipeResponse(recipeResult);
+        return new RecipeResponse(recipeResult);
     }
 }
