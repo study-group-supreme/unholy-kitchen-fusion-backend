@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("/api")
 public class CountryController {
@@ -20,11 +19,11 @@ public class CountryController {
     public CountryController(CountriesService countriesService) {
         this.countriesService = countriesService;
     }
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/search")
     public Mono<String> searchForCountries(@RequestParam String name){
         return countriesService.searchForCountries(name);
     }
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/all")
     public ResponseEntity<List<CountryResponseDTO.CountryDTO>> findAllCountries() {
         return ResponseEntity.ok(countriesService.fetchAllCountries());
     }
