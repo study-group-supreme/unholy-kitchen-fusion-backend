@@ -40,8 +40,6 @@ public class TestController {
                 "Country 1: " + a + "\nCountry 2: " + b);                          // user: the actual request
     }
 
-//    @GetMapping("/test/list-pass")
-//    public String sendList(@RequestBody List<Country> countries) {
 
     @PostMapping("/test/create-recipe")
     public RecipeResponse createRecipe(@RequestBody List<Country> countries) {
