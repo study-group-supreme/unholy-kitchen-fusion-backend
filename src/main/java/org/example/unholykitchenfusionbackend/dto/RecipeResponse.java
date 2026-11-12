@@ -1,4 +1,4 @@
 package org.example.unholykitchenfusionbackend.dto;
 
-public record MashupResponse() {
-}
+    public record RecipeResponse(String recipe) {}
+
