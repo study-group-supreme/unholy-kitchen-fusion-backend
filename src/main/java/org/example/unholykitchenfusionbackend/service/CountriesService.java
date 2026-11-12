@@ -25,28 +25,25 @@ public class CountriesService {
         this.countryRepository = countryRepository;
     }
 
-    public Mono<String> fetchCountryByName(String name) {
+    /**
+     * bodyToMono(CountryResponseDTO.class) makes Jackson parse the JSON into our record class. A field not in the record is ignored.
+     * .map(...) removes the data/meta wrapper, so the frontend gets a plain array like /api/all.
+     * @param name
+     * @return
+     */
+    public Mono<List<CountryResponseDTO.CountryDTO>> searchForCountries(String name) {
         return webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/name")
-                        .queryParam("q", name)
-                        .queryParam("response_fields", "names.common,codes.alpha_2,flag.emoji")
+                    .queryParam("q", name)
+                    .queryParam("response_fields", "names.common,flag.url_png,subregion")
                         .build())
                 .header("Authorization", apikey)
                 .retrieve()
-                .bodyToMono(String.class);
-    }
-
-    public Mono<String> searchForCountries(String name) {
-        return webClient
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                        .queryParam("q", name)
-                        .build())
-                .header("Authorization", apikey)
-                .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(CountryResponseDTO.class) // JSON -> Java object, instead of String
+                .map(response -> response.data() == null || response.data().objects() == null
+                        ? List.<CountryResponseDTO.CountryDTO>of()
+                        : response.data().objects());
     }
 
     public List<CountryResponseDTO.CountryDTO> fetchAllCountries() {
