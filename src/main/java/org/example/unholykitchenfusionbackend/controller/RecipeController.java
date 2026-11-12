@@ -18,7 +18,8 @@ public class RecipeController {
     private final LlmService llmService;
     private final String recipeSystemMessage = "You will take this list of countries and create a fusion recipe using " +
             "their distinct food cultures. It will need to include both an ingredient list and step by step guide." +
-            "Omit equipment needed list, and keep the recipe simple";
+            " Omit equipment needed list, and keep the recipe simple" +
+            "There should be no Markdown in the recipe, just plain text.";
 
 
     public RecipeController(CountriesService countriesService, LlmService llmService) {

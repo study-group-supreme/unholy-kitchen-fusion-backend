@@ -53,7 +53,10 @@ public class LlmService {
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(body)                           // record -> JSON by Jackson
                     .retrieve().bodyToMono(ClaudeResponse.class).block();
-            System.out.println(response.usage().output_tokens());
+            log.info("Claude usage: input = {}, output = {}, stop = {}",
+                    response.usage().input_tokens(),
+                    response.usage().output_tokens(),
+                    response.stopReason());
             // the first block is not always text, so pick the first "text" block
             return response.content().stream().filter(b -> "text".equals(b.type()))
                     .map(ClaudeResponse.ContentBlock::text).findFirst()
