@@ -1,10 +1,6 @@
 package org.example.unholykitchenfusionbackend.controller;
-
 import org.example.unholykitchenfusionbackend.dto.CountryResponseDTO;
-import org.example.unholykitchenfusionbackend.model.Country;
 import org.example.unholykitchenfusionbackend.service.CountriesService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -20,7 +16,7 @@ public class CountryController {
         this.countriesService = countriesService;
     }
     @GetMapping("/search")
-    public Mono<String> searchForCountries(@RequestParam String name){
+    public Mono<List<CountryResponseDTO.CountryDTO>> searchForCountries(@RequestParam String name) {
         return countriesService.searchForCountries(name);
     }
     @GetMapping("/all")
