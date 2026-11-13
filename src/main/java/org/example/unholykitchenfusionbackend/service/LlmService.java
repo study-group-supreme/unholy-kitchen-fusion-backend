@@ -57,6 +57,9 @@ public class LlmService {
                     response.usage().input_tokens(),
                     response.usage().output_tokens(),
                     response.stopReason());
+            if (response.stopReason().equalsIgnoreCase("max_tokens")) {
+                return "Maximum token limit has been reached. Reason: " + response.stopReason();
+            }
             // the first block is not always text, so pick the first "text" block
             return response.content().stream().filter(b -> "text".equals(b.type()))
                     .map(ClaudeResponse.ContentBlock::text).findFirst()
